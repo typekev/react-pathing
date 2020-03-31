@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import Cell from "./Cell";
 import { WINDOW_PADDING, CELL_WIDTH } from "../constants";
@@ -18,6 +18,7 @@ const getBoardDimensions = () =>
 const BoardSection = styled.section`
   width: 100%;
   height: 100%;
+  white-space: pre;
 `;
 
 const BoardRow = styled.div`
@@ -26,17 +27,40 @@ const BoardRow = styled.div`
 
 const Board = () => {
   const boardDimensions = getBoardDimensions();
+  const grid =
+    boardDimensions &&
+    [
+      ...Array(Math.floor(boardDimensions[1] / (CELL_WIDTH * fontSize)))
+    ].map((_i, rowIndex) =>
+      [...Array(Math.floor(boardDimensions[0] / (CELL_WIDTH * fontSize)))].map(
+        (_j, cellIndex, self) => rowIndex * self.length + cellIndex
+      )
+    );
+
+  const [selectedCells, setSelectedCells] = useState(
+    grid?.map(row => row.map(cell => false))
+  );
+
+  console.log(selectedCells);
+
   return (
     <BoardSection>
-      {boardDimensions &&
-        [
-          ...Array(Math.floor(boardDimensions[1] / (CELL_WIDTH * fontSize)))
-        ].map(key => (
-          <BoardRow key={key}>
-            {[
-              ...Array(Math.floor(boardDimensions[0] / (CELL_WIDTH * fontSize)))
-            ].map(key => (
-              <Cell key={key} />
+      {selectedCells &&
+        grid?.map((row, rowIndex) => (
+          <BoardRow key={rowIndex}>
+            {row.map((cell, cellIndex) => (
+              <Cell
+                onClick={() => {
+                  const newSelectedCells = [...selectedCells];
+                  newSelectedCells[rowIndex][cellIndex] = !selectedCells[
+                    rowIndex
+                  ][cellIndex];
+                  setSelectedCells(newSelectedCells);
+                }}
+                key={cell}
+              >
+                {selectedCells[rowIndex][cellIndex] && cell}
+              </Cell>
             ))}
           </BoardRow>
         ))}
