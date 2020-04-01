@@ -9,13 +9,15 @@ const Cell = styled.div`
   display: inline-block;
   width: calc(${CELL_WIDTH}em - 0.0625rem);
   height: calc(${CELL_WIDTH}em - 0.0625rem);
-  border: 0.0625rem solid lightgrey;
+  border: 0.0625rem solid;
+  border-color: grey;
   margin-bottom: -0.0625rem;
   margin-right: -0.0625rem;
 
   ${({ selected }: Props) => selected && css`
-    background-color: black
-  `}
+    background-color: black;
+    border-color: black;
+ `}
 `;
 
 export default Cell;
