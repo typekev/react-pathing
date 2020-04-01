@@ -19,6 +19,7 @@ const BoardSection = styled.section`
   width: 100%;
   height: 100%;
   white-space: pre;
+  user-select: none;
 `;
 
 const BoardRow = styled.div`
@@ -55,6 +56,7 @@ const Board = () => {
           <BoardRow key={rowIndex}>
             {row.map((cell, cellIndex) => (
               <Cell
+                selected={selectedCells[rowIndex][cellIndex]}
                 onClick={() => {
                   const newSelectedCells = [...selectedCells];
                   newSelectedCells[rowIndex][cellIndex] = !selectedCells[
@@ -74,9 +76,7 @@ const Board = () => {
                     : () => {}
                 }
                 key={cell}
-              >
-                {selectedCells[rowIndex][cellIndex] && cell}
-              </Cell>
+              />
             ))}
           </BoardRow>
         ))}
