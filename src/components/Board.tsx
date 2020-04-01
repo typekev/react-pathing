@@ -57,7 +57,7 @@ const Board = () => {
             {row.map((cell, cellIndex) => (
               <Cell
                 selected={selectedCells[rowIndex][cellIndex]}
-                onClick={() => {
+                onMouseDown={() => {
                   const newSelectedCells = [...selectedCells];
                   newSelectedCells[rowIndex][cellIndex] = !selectedCells[
                     rowIndex
