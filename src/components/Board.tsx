@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Cell from "./Cell";
 import { WINDOW_PADDING, CELL_WIDTH } from "../constants";
@@ -38,10 +38,15 @@ const Board = () => {
     );
 
   const [selectedCells, setSelectedCells] = useState(
-    grid?.map(row => row.map(cell => false))
+    grid?.map(row => row.map(() => false))
   );
 
-  console.log(selectedCells);
+  const [mouseDowm, setMouseDown] = useState(false);
+
+  useEffect(() => {
+    mainElement?.addEventListener("mousedown", () => setMouseDown(true));
+    mainElement?.addEventListener("mouseup", () => setMouseDown(false));
+  }, []);
 
   return (
     <BoardSection>
@@ -57,6 +62,17 @@ const Board = () => {
                   ][cellIndex];
                   setSelectedCells(newSelectedCells);
                 }}
+                onMouseEnter={
+                  mouseDowm
+                    ? () => {
+                        const newSelectedCells = [...selectedCells];
+                        newSelectedCells[rowIndex][cellIndex] = !selectedCells[
+                          rowIndex
+                        ][cellIndex];
+                        setSelectedCells(newSelectedCells);
+                      }
+                    : () => {}
+                }
                 key={cell}
               >
                 {selectedCells[rowIndex][cellIndex] && cell}
