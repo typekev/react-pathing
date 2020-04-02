@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Cell from "./Cell";
 import { WINDOW_PADDING, CELL_WIDTH } from "../constants";
+import { addEventListeners } from "../utils";
 
 const mainElement = document.getElementById("root");
 const mainElementStyle = mainElement && window.getComputedStyle(mainElement);
@@ -45,8 +46,14 @@ const Board = () => {
   const [mouseDowm, setMouseDown] = useState(false);
 
   useEffect(() => {
-    mainElement?.addEventListener("mousedown", () => setMouseDown(true));
-    mainElement?.addEventListener("mouseup", () => setMouseDown(false));
+    mainElement &&
+      addEventListeners(mainElement, ["mousedown", "touchstart"], () =>
+        setMouseDown(true)
+      );
+    mainElement &&
+      addEventListeners(mainElement, ["mouseup", "touchend"], () =>
+        setMouseDown(false)
+      );
   }, []);
 
   return (
@@ -56,6 +63,7 @@ const Board = () => {
           <BoardRow key={rowIndex}>
             {row.map((cell, cellIndex) => (
               <Cell
+                key={cell}
                 selected={selectedCells[rowIndex][cellIndex]}
                 onMouseDown={() => {
                   const newSelectedCells = [...selectedCells];
@@ -75,7 +83,6 @@ const Board = () => {
                       }
                     : () => {}
                 }
-                key={cell}
               />
             ))}
           </BoardRow>
