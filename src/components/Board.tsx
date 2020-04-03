@@ -3,6 +3,8 @@ import styled from "styled-components";
 import Cell from "./Cell";
 import { WINDOW_PADDING, CELL_WIDTH } from "../constants";
 import { addEventListeners } from "../utils";
+import BoardSection from "./BoardSection";
+import BoardRow from "./BoardRow";
 
 const mainElement = document.getElementById("root");
 const mainElementStyle = mainElement && window.getComputedStyle(mainElement);
@@ -15,17 +17,6 @@ const getBoardDimensions = () =>
     parseInt(mainElementStyle.getPropertyValue("width")) - dimensionOffset,
     parseInt(mainElementStyle.getPropertyValue("height")) - dimensionOffset
   ];
-
-const BoardSection = styled.section`
-  width: 100%;
-  height: 100%;
-  white-space: pre;
-  user-select: none;
-`;
-
-const BoardRow = styled.div`
-  margin-top: -0.25rem;
-`;
 
 const Board = () => {
   const boardDimensions = getBoardDimensions();
