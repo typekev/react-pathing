@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
 import Cell from "./Cell";
 import { WINDOW_PADDING, CELL_WIDTH } from "../constants";
 import { addEventListeners } from "../utils";
