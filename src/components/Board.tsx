@@ -44,7 +44,7 @@ const Board = () => {
     grid.map(row => row.map(() => false))
   );
 
-  const [mouseDowm, setMouseDown] = useState(false);
+  const [mouseDown, setMouseDown] = useState(false);
 
   useEffect(() => {
     mainElement &&
@@ -75,7 +75,7 @@ const Board = () => {
                   )
                 }
                 onMouseEnter={() =>
-                  mouseDowm &&
+                  mouseDown &&
                   handleCellSelect(
                     setSelectedCells,
                     selectedCells,
