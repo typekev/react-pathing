@@ -14,17 +14,22 @@ const dimensionOffset = WINDOW_PADDING * fontSize * 2;
 const getBoardDimensions = () =>
   mainElementStyle && [
     parseInt(mainElementStyle.getPropertyValue("width")) - dimensionOffset,
-    parseInt(mainElementStyle.getPropertyValue("height")) - dimensionOffset
+    parseInt(mainElementStyle.getPropertyValue("height")) - dimensionOffset,
   ];
 
 const handleCellSelect = (
+  setMode: React.Dispatch<React.SetStateAction<boolean | undefined>>,
+  mode: boolean | undefined,
   setSelectedCells: React.Dispatch<React.SetStateAction<boolean[][]>>,
   selectedCells: boolean[][],
   rowIndex: number,
   cellIndex: number
 ) => {
   const newSelectedCells = [...selectedCells];
-  newSelectedCells[rowIndex][cellIndex] = !selectedCells[rowIndex][cellIndex];
+  const newCellValue =
+    mode === undefined ? !selectedCells[rowIndex][cellIndex] : mode;
+  setMode(newCellValue);
+  newSelectedCells[rowIndex][cellIndex] = newCellValue;
   setSelectedCells(newSelectedCells);
 };
 
@@ -32,19 +37,20 @@ const Board = () => {
   const boardDimensions = getBoardDimensions();
   const grid = boardDimensions
     ? [
-        ...Array(Math.floor(boardDimensions[1] / (CELL_WIDTH * fontSize)))
+        ...Array(Math.floor(boardDimensions[1] / (CELL_WIDTH * fontSize))),
       ].map((_i, rowIndex) =>
         [
-          ...Array(Math.floor(boardDimensions[0] / (CELL_WIDTH * fontSize)))
+          ...Array(Math.floor(boardDimensions[0] / (CELL_WIDTH * fontSize))),
         ].map((_j, cellIndex, self) => rowIndex * self.length + cellIndex)
       )
     : [[]];
 
   const [selectedCells, setSelectedCells] = useState<boolean[][]>(
-    grid.map(row => row.map(() => false))
+    grid.map((row) => row.map(() => false))
   );
 
   const [mouseDown, setMouseDown] = useState(false);
+  const [mode, setMode] = useState<boolean>();
 
   useEffect(() => {
     mainElement &&
@@ -52,9 +58,10 @@ const Board = () => {
         setMouseDown(true)
       );
     mainElement &&
-      addEventListeners(mainElement, ["mouseup", "touchend"], () =>
-        setMouseDown(false)
-      );
+      addEventListeners(mainElement, ["mouseup", "touchend"], () => {
+        setMouseDown(false);
+        setMode(undefined);
+      });
   }, []);
 
   return (
@@ -68,15 +75,28 @@ const Board = () => {
                 selected={selectedCells[rowIndex][cellIndex]}
                 onMouseDown={() =>
                   handleCellSelect(
+                    setMode,
+                    mode,
                     setSelectedCells,
                     selectedCells,
                     rowIndex,
                     cellIndex
                   )
                 }
+                // onTouchMove={() =>
+                //   mouseDown &&
+                //   handleCellSelect(
+                //     setSelectedCells,
+                //     selectedCells,
+                //     rowIndex,
+                //     cellIndex
+                //   )
+                // }
                 onMouseEnter={() =>
                   mouseDown &&
                   handleCellSelect(
+                    setMode,
+                    mode,
                     setSelectedCells,
                     selectedCells,
                     rowIndex,
