@@ -4,6 +4,7 @@ import { WINDOW_PADDING, CELL_WIDTH } from "../constants";
 import { addEventListeners } from "../utils";
 import BoardSection from "./BoardSection";
 import BoardRow from "./BoardRow";
+import handleCellSelect from "./handleCellSelect";
 
 const mainElement = document.getElementById("root");
 const mainElementStyle = mainElement && window.getComputedStyle(mainElement);
@@ -16,22 +17,6 @@ const getBoardDimensions = () =>
     parseInt(mainElementStyle.getPropertyValue("width")) - dimensionOffset,
     parseInt(mainElementStyle.getPropertyValue("height")) - dimensionOffset,
   ];
-
-const handleCellSelect = (
-  setMode: React.Dispatch<React.SetStateAction<boolean | undefined>>,
-  mode: boolean | undefined,
-  setSelectedCells: React.Dispatch<React.SetStateAction<boolean[][]>>,
-  selectedCells: boolean[][],
-  rowIndex: number,
-  cellIndex: number
-) => {
-  const newSelectedCells = [...selectedCells];
-  const newCellValue =
-    mode === undefined ? !selectedCells[rowIndex][cellIndex] : mode;
-  setMode(newCellValue);
-  newSelectedCells[rowIndex][cellIndex] = newCellValue;
-  setSelectedCells(newSelectedCells);
-};
 
 const Board = () => {
   const boardDimensions = getBoardDimensions();
@@ -50,18 +35,18 @@ const Board = () => {
   );
 
   const [mouseDown, setMouseDown] = useState(false);
-  const [mode, setMode] = useState<boolean>();
+  const [additionMode, setAdditionMode] = useState<boolean>();
 
   useEffect(() => {
-    mainElement &&
+    if (mainElement) {
       addEventListeners(mainElement, ["mousedown", "touchstart"], () =>
         setMouseDown(true)
       );
-    mainElement &&
       addEventListeners(mainElement, ["mouseup", "touchend"], () => {
         setMouseDown(false);
-        setMode(undefined);
+        setAdditionMode(undefined);
       });
+    }
   }, []);
 
   return (
@@ -75,8 +60,8 @@ const Board = () => {
                 selected={selectedCells[rowIndex][cellIndex]}
                 onMouseDown={() =>
                   handleCellSelect(
-                    setMode,
-                    mode,
+                    setAdditionMode,
+                    additionMode,
                     setSelectedCells,
                     selectedCells,
                     rowIndex,
@@ -95,8 +80,8 @@ const Board = () => {
                 onMouseEnter={() =>
                   mouseDown &&
                   handleCellSelect(
-                    setMode,
-                    mode,
+                    setAdditionMode,
+                    additionMode,
                     setSelectedCells,
                     selectedCells,
                     rowIndex,
