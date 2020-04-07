@@ -1,8 +1,9 @@
 import styled, { css } from "styled-components";
-import { CELL_WIDTH } from '../constants'
+import { CELL_WIDTH, NODE_TYPE_START, NODE_TYPE_TARGET } from '../constants'
 
 interface Props {
-  selected: boolean
+  selected: boolean;
+  type?: string;
 }
 
 const Cell = styled.div`
@@ -15,6 +16,16 @@ const Cell = styled.div`
   margin-right: -0.0625rem;
 
   ${({ selected }: Props) => selected && css`
+    background-color: black;
+    border-color: black;
+ `}
+
+ ${({ type }: Props) => type === NODE_TYPE_START && css`
+    background-color: black;
+    border-color: black;
+ `}
+
+ ${({ type }: Props) => type === NODE_TYPE_TARGET && css`
     background-color: black;
     border-color: black;
  `}

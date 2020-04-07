@@ -5,6 +5,7 @@ import { addEventListeners } from "../utils";
 import BoardSection from "./BoardSection";
 import BoardRow from "./BoardRow";
 import handleCellSelect from "./handleCellSelect";
+import { MODES } from "../types";
 
 const mainElement = document.getElementById("root");
 const mainElementStyle = mainElement && window.getComputedStyle(mainElement);
@@ -35,7 +36,7 @@ const Board = () => {
   );
 
   const [mouseDown, setMouseDown] = useState(false);
-  const [additionMode, setAdditionMode] = useState<boolean>();
+  const [mode, setMode] = useState(MODES.FILL_MODE);
 
   useEffect(() => {
     if (mainElement) {
@@ -44,7 +45,7 @@ const Board = () => {
       );
       addEventListeners(mainElement, ["mouseup", "touchend"], () => {
         setMouseDown(false);
-        setAdditionMode(undefined);
+        setMode(MODES.FILL_MODE);
       });
     }
   }, []);
@@ -59,29 +60,23 @@ const Board = () => {
                 key={cell}
                 selected={selectedCells[rowIndex][cellIndex]}
                 onMouseDown={() =>
-                  handleCellSelect(
-                    setAdditionMode,
-                    additionMode,
-                    setSelectedCells,
-                    selectedCells,
-                    rowIndex,
-                    cellIndex
+                  setMode(
+                    handleCellSelect(
+                      mode,
+                      setSelectedCells,
+                      selectedCells,
+                      rowIndex,
+                      cellIndex,
+                      !selectedCells[rowIndex][cellIndex]
+                    )
+                      ? MODES.FILL_MODE
+                      : MODES.CLEAR_MODE
                   )
                 }
-                // onTouchMove={() =>
-                //   mouseDown &&
-                //   handleCellSelect(
-                //     setSelectedCells,
-                //     selectedCells,
-                //     rowIndex,
-                //     cellIndex
-                //   )
-                // }
                 onMouseEnter={() =>
                   mouseDown &&
                   handleCellSelect(
-                    setAdditionMode,
-                    additionMode,
+                    mode,
                     setSelectedCells,
                     selectedCells,
                     rowIndex,
