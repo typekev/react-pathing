@@ -5,6 +5,7 @@ import { addEventListeners } from "../utils";
 import BoardSection from "./BoardSection";
 import BoardRow from "./BoardRow";
 import handleCellSelect from "./handleCellSelect";
+import SpeedDial from "./SpeedDial";
 import { MODES } from "../types";
 
 const mainElement = document.getElementById("root");
@@ -87,6 +88,7 @@ const Board = () => {
             ))}
           </BoardRow>
         ))}
+      <SpeedDial />
     </BoardSection>
   );
 };
