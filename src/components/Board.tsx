@@ -88,7 +88,7 @@ const Board = () => {
             ))}
           </BoardRow>
         ))}
-      <SpeedDial />
+      <SpeedDial mode={mode} setMode={setMode} />
     </BoardSection>
   );
 };

@@ -6,6 +6,7 @@ import SpeedDialAction from "@material-ui/lab/SpeedDialAction";
 import AddRoundedIcon from "@material-ui/icons/AddRounded";
 import CloseRoundedIcon from "@material-ui/icons/CloseRounded";
 import TrackChangesRoundedIcon from "@material-ui/icons/TrackChangesRounded";
+import { MODES } from "../types";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -17,13 +18,22 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-const actions = [
-  { icon: <TrackChangesRoundedIcon />, name: "Place target node" },
-];
+interface Props {
+  mode: MODES;
+  setMode: React.Dispatch<React.SetStateAction<MODES>>;
+}
 
-const SpeedDial = () => {
+const SpeedDial = ({ mode, setMode }: Props) => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
+
+  const actions = [
+    {
+      icon: <TrackChangesRoundedIcon />,
+      name: "Place target node",
+      onClick: () => setMode(MODES.TARGET_NODE_MODE),
+    },
+  ];
 
   const handleOpen = () => {
     setOpen(true);
@@ -52,7 +62,10 @@ const SpeedDial = () => {
           key={action.name}
           icon={action.icon}
           tooltipTitle={action.name}
-          onClick={handleClose}
+          onClick={() => {
+            handleClose();
+            action.onClick();
+          }}
         />
       ))}
     </MuiSpeedDial>
