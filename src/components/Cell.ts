@@ -22,6 +22,11 @@ const Cell = styled.div`
     border-color: black;
  `}
 
+ ${({ mode }: Props) => mode === MODES.START_NODE_MODE && css`
+    background-color: green;
+    border-color: green;
+ `}
+
  ${({ mode }: Props) => mode === MODES.TARGET_NODE_MODE && css`
     background-color: red;
     border-color: red;

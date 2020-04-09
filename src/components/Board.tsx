@@ -24,6 +24,7 @@ const VALUE_SWAP_MAP = {
   [MODES.FILL_MODE]: MODES.CLEAR_MODE,
   [MODES.CLEAR_MODE]: MODES.FILL_MODE,
   [MODES.TARGET_NODE_MODE]: MODES.CLEAR_MODE,
+  [MODES.START_NODE_MODE]: MODES.START_NODE_MODE,
 };
 
 const Board = () => {
@@ -58,16 +59,16 @@ const Board = () => {
         mode,
         setSelectedCells,
         selectedCells,
-        Math.floor(Math.random() * selectedCells.length) + 1,
-        Math.floor(Math.random() * selectedCells[0].length) + 1,
-        MODES.FILL_MODE
+        Math.floor(Math.random() * selectedCells.length),
+        Math.floor(Math.random() * selectedCells[0].length),
+        MODES.START_NODE_MODE
       );
       handleCellSelect(
         mode,
         setSelectedCells,
         selectedCells,
-        Math.floor(Math.random() * selectedCells.length) + 1,
-        Math.floor(Math.random() * selectedCells[0].length) + 1,
+        Math.floor(Math.random() * selectedCells.length),
+        Math.floor(Math.random() * selectedCells[0].length),
         MODES.TARGET_NODE_MODE
       );
     }
