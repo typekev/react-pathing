@@ -54,6 +54,22 @@ const Board = () => {
         setMouseDown(false);
         setMode(MODES.FILL_MODE);
       });
+      handleCellSelect(
+        mode,
+        setSelectedCells,
+        selectedCells,
+        Math.floor(Math.random() * selectedCells.length) + 1,
+        Math.floor(Math.random() * selectedCells[0].length) + 1,
+        MODES.FILL_MODE
+      );
+      handleCellSelect(
+        mode,
+        setSelectedCells,
+        selectedCells,
+        Math.floor(Math.random() * selectedCells.length) + 1,
+        Math.floor(Math.random() * selectedCells[0].length) + 1,
+        MODES.TARGET_NODE_MODE
+      );
     }
   }, []);
 
