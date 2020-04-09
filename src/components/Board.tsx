@@ -20,6 +20,12 @@ const getBoardDimensions = () =>
     parseInt(mainElementStyle.getPropertyValue("height")) - dimensionOffset,
   ];
 
+const VALUE_SWAP_MAP = {
+  [MODES.FILL_MODE]: MODES.CLEAR_MODE,
+  [MODES.CLEAR_MODE]: MODES.FILL_MODE,
+  [MODES.TARGET_NODE_MODE]: MODES.CLEAR_MODE,
+};
+
 const Board = () => {
   const boardDimensions = getBoardDimensions();
   const grid = boardDimensions
@@ -32,8 +38,8 @@ const Board = () => {
       )
     : [[]];
 
-  const [selectedCells, setSelectedCells] = useState<boolean[][]>(
-    grid.map((row) => row.map(() => false))
+  const [selectedCells, setSelectedCells] = useState<MODES[][]>(
+    grid.map((row) => row.map(() => MODES.CLEAR_MODE))
   );
 
   const [mouseDown, setMouseDown] = useState(false);
@@ -59,7 +65,7 @@ const Board = () => {
             {row.map((cell, cellIndex) => (
               <Cell
                 key={cell}
-                selected={selectedCells[rowIndex][cellIndex]}
+                mode={selectedCells[rowIndex][cellIndex]}
                 onMouseDown={() =>
                   setMode(
                     handleCellSelect(
@@ -68,10 +74,10 @@ const Board = () => {
                       selectedCells,
                       rowIndex,
                       cellIndex,
-                      !selectedCells[rowIndex][cellIndex]
+                      mode === MODES.TARGET_NODE_MODE
+                        ? MODES.TARGET_NODE_MODE
+                        : VALUE_SWAP_MAP[selectedCells[rowIndex][cellIndex]]
                     )
-                      ? MODES.FILL_MODE
-                      : MODES.CLEAR_MODE
                   )
                 }
                 onMouseEnter={() =>
