@@ -74,8 +74,8 @@ const Board = () => {
                       selectedCells,
                       rowIndex,
                       cellIndex,
-                      mode === MODES.TARGET_NODE_MODE
-                        ? MODES.TARGET_NODE_MODE
+                      mode !== MODES.FILL_MODE
+                        ? mode
                         : VALUE_SWAP_MAP[selectedCells[rowIndex][cellIndex]]
                     )
                   )
