@@ -72,6 +72,7 @@ const Board = () => {
         MODES.TARGET_NODE_MODE
       );
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
