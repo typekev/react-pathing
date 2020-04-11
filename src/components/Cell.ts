@@ -1,9 +1,9 @@
-import styled, { css } from "styled-components";
+import styled, { css } from 'styled-components'
 import { CELL_WIDTH } from '../constants'
-import { MODES } from "../types";
+import { MODES } from '../types'
 
 interface Props {
-   mode: MODES;
+  mode: MODES
 }
 
 const Cell = styled.div`
@@ -17,20 +17,26 @@ const Cell = styled.div`
 
 
 
- ${({ mode }: Props) => mode === MODES.FILL_MODE && css`
-    background-color: black;
-    border-color: black;
- `}
+ ${({ mode }: Props) =>
+   mode === MODES.FILL_MODE &&
+   css`
+     background-color: black;
+     border-color: black;
+   `}
 
- ${({ mode }: Props) => mode === MODES.START_NODE_MODE && css`
-    background-color: green;
-    border-color: green;
- `}
+ ${({ mode }: Props) =>
+   mode === MODES.START_NODE_MODE &&
+   css`
+     background-color: green;
+     border-color: green;
+   `}
 
- ${({ mode }: Props) => mode === MODES.TARGET_NODE_MODE && css`
-    background-color: red;
-    border-color: red;
- `}
-`;
+ ${({ mode }: Props) =>
+   mode === MODES.TARGET_NODE_MODE &&
+   css`
+     background-color: red;
+     border-color: red;
+   `}
+`
 
-export default Cell;
+export default Cell

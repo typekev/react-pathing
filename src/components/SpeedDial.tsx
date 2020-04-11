@@ -1,47 +1,47 @@
-import React from "react";
-import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
-import MuiSpeedDial from "@material-ui/lab/SpeedDial";
-import SpeedDialIcon from "@material-ui/lab/SpeedDialIcon";
-import SpeedDialAction from "@material-ui/lab/SpeedDialAction";
-import AddRoundedIcon from "@material-ui/icons/AddRounded";
-import CloseRoundedIcon from "@material-ui/icons/CloseRounded";
-import TrackChangesRoundedIcon from "@material-ui/icons/TrackChangesRounded";
-import { MODES } from "../types";
+import React from 'react'
+import { makeStyles, createStyles, Theme } from '@material-ui/core/styles'
+import MuiSpeedDial from '@material-ui/lab/SpeedDial'
+import SpeedDialIcon from '@material-ui/lab/SpeedDialIcon'
+import SpeedDialAction from '@material-ui/lab/SpeedDialAction'
+import AddRoundedIcon from '@material-ui/icons/AddRounded'
+import CloseRoundedIcon from '@material-ui/icons/CloseRounded'
+import TrackChangesRoundedIcon from '@material-ui/icons/TrackChangesRounded'
+import { MODES } from '../types'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     speedDial: {
-      position: "absolute",
+      position: 'absolute',
       bottom: theme.spacing(4),
       right: theme.spacing(4),
     },
   })
-);
+)
 
 interface Props {
-  mode: MODES;
-  setMode: React.Dispatch<React.SetStateAction<MODES>>;
+  mode: MODES
+  setMode: React.Dispatch<React.SetStateAction<MODES>>
 }
 
 const SpeedDial = ({ mode, setMode }: Props) => {
-  const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
+  const classes = useStyles()
+  const [open, setOpen] = React.useState(false)
 
   const actions = [
     {
       icon: <TrackChangesRoundedIcon />,
-      name: "Place target node",
+      name: 'Place target node',
       onClick: () => setMode(MODES.TARGET_NODE_MODE),
     },
-  ];
+  ]
 
   const handleOpen = () => {
-    setOpen(true);
-  };
+    setOpen(true)
+  }
 
   const handleClose = () => {
-    setOpen(false);
-  };
+    setOpen(false)
+  }
 
   return (
     <MuiSpeedDial
@@ -63,13 +63,13 @@ const SpeedDial = ({ mode, setMode }: Props) => {
           icon={action.icon}
           tooltipTitle={action.name}
           onClick={() => {
-            handleClose();
-            action.onClick();
+            handleClose()
+            action.onClick()
           }}
         />
       ))}
     </MuiSpeedDial>
-  );
-};
+  )
+}
 
-export default SpeedDial;
+export default SpeedDial
