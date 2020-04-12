@@ -6,7 +6,7 @@ interface Props {
   mode: MODES
 }
 
-const Node = styled.div`
+const Cell = styled.div`
   display: inline-block;
   width: calc(${NODE_WIDTH}em - 0.0625rem);
   height: calc(${NODE_WIDTH}em - 0.0625rem);
@@ -37,4 +37,4 @@ const Node = styled.div`
    `}
 `
 
-export default Node
+export default Cell

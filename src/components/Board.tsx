@@ -1,112 +1,102 @@
-import React, { useState, useEffect } from 'react'
-import Node from './Node'
-import { WINDOW_PADDING, NODE_WIDTH } from '../constants'
-import { addEventListeners } from '../utils'
-import BoardSection from './BoardSection'
-import BoardRow from './BoardRow'
-import handleNodeSelect from './handleNodeSelect'
-import SpeedDial from './SpeedDial'
-import { MODES } from '../types'
+import React, { useState, useEffect } from 'react';
+import Cell from './Cell';
+import { addEventListeners } from '../utils';
+import BoardSection from './BoardSection';
+import BoardRow from './BoardRow';
+import handleNodeSelect from './handleNodeSelect';
+import SpeedDial from './SpeedDial';
+import { MODES, Node } from '../types';
+import { MODE_TOGGLE_MAP } from '../constants';
 
-const mainElement = document.getElementById('root')
-const mainElementStyle = mainElement && window.getComputedStyle(mainElement)
-const fontSize = mainElement
-  ? parseFloat(getComputedStyle(mainElement).fontSize) || 16
-  : 16
-const dimensionOffset = WINDOW_PADDING * fontSize * 2
-const getBoardDimensions = () =>
-  mainElementStyle && [
-    parseInt(mainElementStyle.getPropertyValue('width')) - dimensionOffset,
-    parseInt(mainElementStyle.getPropertyValue('height')) - dimensionOffset,
-  ]
-
-const VALUE_SWAP_MAP = {
-  [MODES.FILL_MODE]: MODES.CLEAR_MODE,
-  [MODES.CLEAR_MODE]: MODES.FILL_MODE,
-  [MODES.TARGET_NODE_MODE]: MODES.CLEAR_MODE,
-  [MODES.START_NODE_MODE]: MODES.START_NODE_MODE,
+interface Props {
+  grid: Node[][];
+  setGrid: React.Dispatch<React.SetStateAction<Node[][]>>;
+  mainElement: HTMLElement | null;
 }
 
-const Board = () => {
-  const boardDimensions = getBoardDimensions()
-  const grid = boardDimensions
-    ? [
-        ...Array(Math.floor(boardDimensions[1] / (NODE_WIDTH * fontSize))),
-      ].map((_i, rowIndex) =>
-        [
-          ...Array(Math.floor(boardDimensions[0] / (NODE_WIDTH * fontSize))),
-        ].map((_j, nodeIndex, self) => rowIndex * self.length + nodeIndex)
-      )
-    : [[]]
-
-  const [nodes, setNodes] = useState<MODES[][]>(
-    grid.map((row) => row.map(() => MODES.CLEAR_MODE))
-  )
-
-  const [mouseDown, setMouseDown] = useState(false)
-  const [mode, setMode] = useState(MODES.FILL_MODE)
+const Board = ({ grid, setGrid, mainElement }: Props) => {
+  const [mouseDown, setMouseDown] = useState(false);
+  const [mode, setMode] = useState(MODES.DEFAULT_NODE_MODE);
 
   useEffect(() => {
     if (mainElement) {
-      addEventListeners(mainElement, ['mousedown', 'touchstart'], () =>
-        setMouseDown(true)
-      )
+      addEventListeners(mainElement, ['mousedown', 'touchstart'], () => setMouseDown(true));
       addEventListeners(mainElement, ['mouseup', 'touchend'], () => {
-        setMouseDown(false)
-        setMode(MODES.FILL_MODE)
-      })
-      handleNodeSelect(
-        mode,
-        setNodes,
-        nodes,
-        Math.floor(Math.random() * nodes.length),
-        Math.floor(Math.random() * nodes[0].length),
-        MODES.START_NODE_MODE
-      )
-      handleNodeSelect(
-        mode,
-        setNodes,
-        nodes,
-        Math.floor(Math.random() * nodes.length),
-        Math.floor(Math.random() * nodes[0].length),
-        MODES.TARGET_NODE_MODE
-      )
+        setMouseDown(false);
+        setMode(MODES.DEFAULT_NODE_MODE);
+      });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [mainElement]);
+
+  useEffect(() => {
+    const flatGrid = grid.flat();
+    const startNode = flatGrid.find(node => node.mode === MODES.START_NODE_MODE);
+    const targetNode = flatGrid.find(node => node.mode === MODES.TARGET_NODE_MODE);
+
+    if (flatGrid.length > 1) {
+      if (!startNode) {
+        const startNodePos = {
+          x: Math.floor(Math.random() * grid.length),
+          y: Math.floor(Math.random() * grid[0].length),
+        };
+
+        handleNodeSelect(
+          grid,
+          setGrid,
+          {
+            ...startNodePos,
+            mode: MODES.DEFAULT_NODE_MODE,
+          },
+          MODES.START_NODE_MODE,
+        );
+      }
+
+      if (!targetNode) {
+        const targetNodePos = {
+          x: Math.floor(Math.random() * grid.length),
+          y: Math.floor(Math.random() * grid[0].length),
+        };
+
+        while (startNode && startNode.x === targetNodePos.x && startNode.y === targetNodePos.y) {
+          targetNodePos.x = Math.floor(Math.random() * grid.length);
+          targetNodePos.y = Math.floor(Math.random() * grid[0].length);
+        }
+
+        handleNodeSelect(
+          grid,
+          setGrid,
+          {
+            ...targetNodePos,
+            mode: MODES.DEFAULT_NODE_MODE,
+          },
+          MODES.TARGET_NODE_MODE,
+        );
+      }
+    }
+  }, [grid, setGrid]);
 
   return (
     <BoardSection>
-      {nodes &&
+      {grid &&
         grid.map((row, rowIndex) => (
           <BoardRow key={rowIndex}>
-            {row.map((node, nodeIndex) => (
-              <Node
-                key={node}
-                mode={nodes[rowIndex][nodeIndex]}
+            {row.map(node => (
+              <Cell
+                key={`${node.x}${node.y}`}
+                mode={node.mode}
                 onMouseDown={() =>
                   setMode(
                     handleNodeSelect(
-                      mode,
-                      setNodes,
-                      nodes,
-                      rowIndex,
-                      nodeIndex,
-                      mode !== MODES.FILL_MODE
-                        ? mode
-                        : VALUE_SWAP_MAP[nodes[rowIndex][nodeIndex]]
-                    )
+                      grid,
+                      setGrid,
+                      node,
+                      mode === MODES.DEFAULT_NODE_MODE ? MODE_TOGGLE_MAP[node.mode] : mode,
+                    ),
                   )
                 }
                 onMouseEnter={() =>
                   mouseDown &&
-                  handleNodeSelect(
-                    mode,
-                    setNodes,
-                    nodes,
-                    rowIndex,
-                    nodeIndex
-                  )
+                  handleNodeSelect(grid, setGrid, node, mode !== MODES.DEFAULT_NODE_MODE && mode)
                 }
               />
             ))}
@@ -114,7 +104,7 @@ const Board = () => {
         ))}
       <SpeedDial mode={mode} setMode={setMode} />
     </BoardSection>
-  )
-}
+  );
+};
 
-export default Board
+export default Board;
