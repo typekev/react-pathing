@@ -1,15 +1,15 @@
 import styled, { css } from 'styled-components'
-import { CELL_WIDTH } from '../constants'
+import { NODE_WIDTH } from '../constants'
 import { MODES } from '../types'
 
 interface Props {
   mode: MODES
 }
 
-const Cell = styled.div`
+const Node = styled.div`
   display: inline-block;
-  width: calc(${CELL_WIDTH}em - 0.0625rem);
-  height: calc(${CELL_WIDTH}em - 0.0625rem);
+  width: calc(${NODE_WIDTH}em - 0.0625rem);
+  height: calc(${NODE_WIDTH}em - 0.0625rem);
   border: 0.0625rem solid;
   border-color: grey;
   margin-bottom: -0.0625rem;
@@ -39,4 +39,4 @@ const Cell = styled.div`
    `}
 `
 
-export default Cell
+export default Node

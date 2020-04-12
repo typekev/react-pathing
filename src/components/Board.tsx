@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import Cell from './Cell'
-import { WINDOW_PADDING, CELL_WIDTH } from '../constants'
+import Node from './Node'
+import { WINDOW_PADDING, NODE_WIDTH } from '../constants'
 import { addEventListeners } from '../utils'
 import BoardSection from './BoardSection'
 import BoardRow from './BoardRow'
-import handleCellSelect from './handleCellSelect'
+import handleNodeSelect from './handleNodeSelect'
 import SpeedDial from './SpeedDial'
 import { MODES } from '../types'
 
@@ -31,15 +31,15 @@ const Board = () => {
   const boardDimensions = getBoardDimensions()
   const grid = boardDimensions
     ? [
-        ...Array(Math.floor(boardDimensions[1] / (CELL_WIDTH * fontSize))),
+        ...Array(Math.floor(boardDimensions[1] / (NODE_WIDTH * fontSize))),
       ].map((_i, rowIndex) =>
         [
-          ...Array(Math.floor(boardDimensions[0] / (CELL_WIDTH * fontSize))),
-        ].map((_j, cellIndex, self) => rowIndex * self.length + cellIndex)
+          ...Array(Math.floor(boardDimensions[0] / (NODE_WIDTH * fontSize))),
+        ].map((_j, nodeIndex, self) => rowIndex * self.length + nodeIndex)
       )
     : [[]]
 
-  const [selectedCells, setSelectedCells] = useState<MODES[][]>(
+  const [selectedNodes, setSelectedNodes] = useState<MODES[][]>(
     grid.map((row) => row.map(() => MODES.CLEAR_MODE))
   )
 
@@ -55,20 +55,20 @@ const Board = () => {
         setMouseDown(false)
         setMode(MODES.FILL_MODE)
       })
-      handleCellSelect(
+      handleNodeSelect(
         mode,
-        setSelectedCells,
-        selectedCells,
-        Math.floor(Math.random() * selectedCells.length),
-        Math.floor(Math.random() * selectedCells[0].length),
+        setSelectedNodes,
+        selectedNodes,
+        Math.floor(Math.random() * selectedNodes.length),
+        Math.floor(Math.random() * selectedNodes[0].length),
         MODES.START_NODE_MODE
       )
-      handleCellSelect(
+      handleNodeSelect(
         mode,
-        setSelectedCells,
-        selectedCells,
-        Math.floor(Math.random() * selectedCells.length),
-        Math.floor(Math.random() * selectedCells[0].length),
+        setSelectedNodes,
+        selectedNodes,
+        Math.floor(Math.random() * selectedNodes.length),
+        Math.floor(Math.random() * selectedNodes[0].length),
         MODES.TARGET_NODE_MODE
       )
     }
@@ -77,35 +77,35 @@ const Board = () => {
 
   return (
     <BoardSection>
-      {selectedCells &&
+      {selectedNodes &&
         grid.map((row, rowIndex) => (
           <BoardRow key={rowIndex}>
-            {row.map((cell, cellIndex) => (
-              <Cell
-                key={cell}
-                mode={selectedCells[rowIndex][cellIndex]}
+            {row.map((node, nodeIndex) => (
+              <Node
+                key={node}
+                mode={selectedNodes[rowIndex][nodeIndex]}
                 onMouseDown={() =>
                   setMode(
-                    handleCellSelect(
+                    handleNodeSelect(
                       mode,
-                      setSelectedCells,
-                      selectedCells,
+                      setSelectedNodes,
+                      selectedNodes,
                       rowIndex,
-                      cellIndex,
+                      nodeIndex,
                       mode !== MODES.FILL_MODE
                         ? mode
-                        : VALUE_SWAP_MAP[selectedCells[rowIndex][cellIndex]]
+                        : VALUE_SWAP_MAP[selectedNodes[rowIndex][nodeIndex]]
                     )
                   )
                 }
                 onMouseEnter={() =>
                   mouseDown &&
-                  handleCellSelect(
+                  handleNodeSelect(
                     mode,
-                    setSelectedCells,
-                    selectedCells,
+                    setSelectedNodes,
+                    selectedNodes,
                     rowIndex,
-                    cellIndex
+                    nodeIndex
                   )
                 }
               />
