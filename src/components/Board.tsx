@@ -39,7 +39,7 @@ const Board = () => {
       )
     : [[]]
 
-  const [selectedNodes, setSelectedNodes] = useState<MODES[][]>(
+  const [nodes, setNodes] = useState<MODES[][]>(
     grid.map((row) => row.map(() => MODES.CLEAR_MODE))
   )
 
@@ -57,18 +57,18 @@ const Board = () => {
       })
       handleNodeSelect(
         mode,
-        setSelectedNodes,
-        selectedNodes,
-        Math.floor(Math.random() * selectedNodes.length),
-        Math.floor(Math.random() * selectedNodes[0].length),
+        setNodes,
+        nodes,
+        Math.floor(Math.random() * nodes.length),
+        Math.floor(Math.random() * nodes[0].length),
         MODES.START_NODE_MODE
       )
       handleNodeSelect(
         mode,
-        setSelectedNodes,
-        selectedNodes,
-        Math.floor(Math.random() * selectedNodes.length),
-        Math.floor(Math.random() * selectedNodes[0].length),
+        setNodes,
+        nodes,
+        Math.floor(Math.random() * nodes.length),
+        Math.floor(Math.random() * nodes[0].length),
         MODES.TARGET_NODE_MODE
       )
     }
@@ -77,24 +77,24 @@ const Board = () => {
 
   return (
     <BoardSection>
-      {selectedNodes &&
+      {nodes &&
         grid.map((row, rowIndex) => (
           <BoardRow key={rowIndex}>
             {row.map((node, nodeIndex) => (
               <Node
                 key={node}
-                mode={selectedNodes[rowIndex][nodeIndex]}
+                mode={nodes[rowIndex][nodeIndex]}
                 onMouseDown={() =>
                   setMode(
                     handleNodeSelect(
                       mode,
-                      setSelectedNodes,
-                      selectedNodes,
+                      setNodes,
+                      nodes,
                       rowIndex,
                       nodeIndex,
                       mode !== MODES.FILL_MODE
                         ? mode
-                        : VALUE_SWAP_MAP[selectedNodes[rowIndex][nodeIndex]]
+                        : VALUE_SWAP_MAP[nodes[rowIndex][nodeIndex]]
                     )
                   )
                 }
@@ -102,8 +102,8 @@ const Board = () => {
                   mouseDown &&
                   handleNodeSelect(
                     mode,
-                    setSelectedNodes,
-                    selectedNodes,
+                    setNodes,
+                    nodes,
                     rowIndex,
                     nodeIndex
                   )

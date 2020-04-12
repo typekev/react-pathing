@@ -15,8 +15,6 @@ const Node = styled.div`
   margin-bottom: -0.0625rem;
   margin-right: -0.0625rem;
 
-
-
  ${({ mode }: Props) =>
    mode === MODES.FILL_MODE &&
    css`
