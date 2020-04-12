@@ -7,6 +7,7 @@ import handleNodeSelect from './handleNodeSelect';
 import SpeedDial from './SpeedDial';
 import { MODES, Node } from '../types';
 import { MODE_TOGGLE_MAP } from '../constants';
+import dijkstra from '../pathers/dijkstra';
 
 interface Props {
   grid: Node[][];
@@ -45,6 +46,7 @@ const Board = ({ grid, setGrid, mainElement }: Props) => {
           setGrid,
           {
             ...startNodePos,
+            index: parseInt(`${startNodePos.x}${startNodePos.y}`),
             mode: MODES.DEFAULT_NODE_MODE,
           },
           MODES.START_NODE_MODE,
@@ -67,11 +69,16 @@ const Board = ({ grid, setGrid, mainElement }: Props) => {
           setGrid,
           {
             ...targetNodePos,
+            index: parseInt(`${targetNodePos.x}${targetNodePos.y}`),
             mode: MODES.DEFAULT_NODE_MODE,
           },
           MODES.TARGET_NODE_MODE,
         );
       }
+    }
+
+    if (startNode && targetNode) {
+      dijkstra({ startNode, endNode: targetNode, grid });
     }
   }, [grid, setGrid]);
 
