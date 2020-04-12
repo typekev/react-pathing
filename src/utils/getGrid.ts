@@ -10,6 +10,7 @@ const getGrid = async (mainElement: HTMLElement | null): Promise<Node[][]> => {
         range(Math.floor(boardDimensions[0] / (NODE_WIDTH * fontSize))).map(index => ({
             x: rowIndex,
             y: index,
+            index: parseInt(`${rowIndex}${index}`),
             mode: MODES.CLEAR_MODE,
         })),
     );

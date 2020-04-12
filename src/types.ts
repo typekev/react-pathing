@@ -10,5 +10,6 @@ export enum MODES {
 export interface Node {
   x: number
   y: number,
+  index: number,
   mode: MODES,
 }
