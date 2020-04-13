@@ -9,9 +9,12 @@ interface Props {
 }
 
 type Path = Node[];
+interface Times {
+  [index: string]: number;
+}
 
 const dijkstra = ({ startNode, endNode, grid }: Props): Path => {
-  const times: any = {};
+  const times: Times = {};
   let trace: any = {};
   const queue = new PriorityQueue();
 

@@ -4,7 +4,7 @@ import { addEventListeners } from '../utils';
 import BoardSection from './BoardSection';
 import BoardRow from './BoardRow';
 import { MODES, Node } from '../types';
-import { MODE_TOGGLE_MAP } from '../constants';
+import { MODE_TOGGLE_MAP, ENTERABLE_MODES } from '../constants';
 import SpeedDial from './SpeedDial';
 import handleNodeSelect from './Board/handleNodeSelect';
 import initBoard from './Board/initBoard';
@@ -30,12 +30,36 @@ const Board = ({ grid, setGrid, mainElement }: Props) => {
     }
   }, [mainElement]);
 
+  const flatGrid = grid.flat();
+  const startNode = flatGrid.find(node => node.mode === MODES.START_NODE_MODE);
+  const targetNode = flatGrid.find(node => node.mode === MODES.TARGET_NODE_MODE);
+
   useEffect(() => {
-    const { startNode, targetNode } = initBoard(grid, setGrid);
-    if (startNode && targetNode) {
-      dijkstra({ startNode, endNode: targetNode, grid });
+    if (!startNode && !targetNode) {
+      initBoard(grid, setGrid);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [grid, setGrid]);
+
+  const runDijkstra = () => {
+    if (startNode && targetNode) {
+      const path = dijkstra({ startNode, endNode: targetNode, grid });
+      const pathNodes = flatGrid.filter(node => node.mode === MODES.PATH_NODE_MODE);
+      const nextGrid = [...grid];
+
+      pathNodes.forEach(({ x, y, index }) => {
+        nextGrid[x][y] = { x, y, index, mode: MODES.CLEAR_MODE };
+      });
+
+      path.shift();
+      path.pop();
+      path.filter(Boolean).forEach(({ x, y, index }) => {
+        nextGrid[x][y] = { x, y, index, mode: MODES.PATH_NODE_MODE };
+      });
+
+      setGrid(nextGrid);
+    }
+  };
 
   return (
     <BoardSection>
@@ -58,13 +82,13 @@ const Board = ({ grid, setGrid, mainElement }: Props) => {
                 }
                 onMouseEnter={() =>
                   mouseDown &&
-                  handleNodeSelect(grid, setGrid, node, mode !== MODES.DEFAULT_NODE_MODE && mode)
+                  handleNodeSelect(grid, setGrid, node, ENTERABLE_MODES.includes(mode) && mode)
                 }
               />
             ))}
           </BoardRow>
         ))}
-      <SpeedDial mode={mode} setMode={setMode} />
+      <SpeedDial mode={mode} setMode={setMode} runDijkstra={runDijkstra} />
     </BoardSection>
   );
 };
