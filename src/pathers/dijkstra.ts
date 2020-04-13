@@ -9,22 +9,14 @@ interface Props {
 }
 
 type Path = Node[];
-interface Times {
-  [index: string]: number;
-}
 
 const dijkstra = ({ startNode, endNode, grid }: Props): Path => {
-  const times: Times = {};
+  const flatGrid = grid.flat();
+  const times: number[] = flatGrid.map(({ index }) => (index === startNode.index ? 0 : Infinity));
   let trace: any = {};
   const queue = new PriorityQueue();
 
   times[startNode.index] = 0;
-
-  grid.flat().forEach(node => {
-    if (node.mode !== startNode.mode) {
-      times[node.index] = Infinity;
-    }
-  });
 
   queue.enqueue([startNode, 0]);
 
