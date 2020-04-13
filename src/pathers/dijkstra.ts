@@ -13,7 +13,7 @@ type Path = Node[];
 const dijkstra = ({ startNode, endNode, grid }: Props): Path => {
   const flatGrid = grid.flat();
   const times: number[] = flatGrid.map(({ index }) => (index === startNode.index ? 0 : Infinity));
-  let trace: any = {};
+  const trace: Map<Node, Node> = new Map();
   const queue = new PriorityQueue();
 
   queue.enqueue([startNode, 0]);
@@ -27,7 +27,7 @@ const dijkstra = ({ startNode, endNode, grid }: Props): Path => {
 
       if (time < times[neighbor.index]) {
         times[neighbor.index] = time;
-        trace[neighbor.index] = currentNode;
+        trace.set(neighbor, currentNode);
         queue.enqueue([neighbor, time]);
       }
     });
@@ -36,9 +36,10 @@ const dijkstra = ({ startNode, endNode, grid }: Props): Path => {
   const path = [endNode];
   let lastStep = endNode;
 
-  while (lastStep && lastStep.index !== startNode.index) {
-    path.unshift(trace[lastStep.index]);
-    lastStep = trace[lastStep.index];
+  while (lastStep.index !== startNode.index) {
+    const lastStepTrace = trace.get(lastStep)!;
+    path.unshift(lastStepTrace);
+    lastStep = lastStepTrace;
   }
 
   return path;
