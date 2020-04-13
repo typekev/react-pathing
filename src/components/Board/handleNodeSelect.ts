@@ -1,5 +1,5 @@
-import { MODES, Node } from '../types';
-import { MODE_TOGGLE_MAP } from '../constants';
+import { MODES, Node } from '../../types';
+import { MODE_TOGGLE_MAP } from '../../constants';
 
 const handleNodeSelect = (
   grid: Node[][],

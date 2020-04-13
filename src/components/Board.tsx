@@ -3,10 +3,11 @@ import Cell from './Cell';
 import { addEventListeners } from '../utils';
 import BoardSection from './BoardSection';
 import BoardRow from './BoardRow';
-import handleNodeSelect from './handleNodeSelect';
-import SpeedDial from './SpeedDial';
 import { MODES, Node } from '../types';
 import { MODE_TOGGLE_MAP } from '../constants';
+import SpeedDial from './SpeedDial';
+import handleNodeSelect from './Board/handleNodeSelect';
+import initBoard from './Board/initBoard';
 import dijkstra from '../pathers/dijkstra';
 
 interface Props {
@@ -30,53 +31,7 @@ const Board = ({ grid, setGrid, mainElement }: Props) => {
   }, [mainElement]);
 
   useEffect(() => {
-    const flatGrid = grid.flat();
-    const startNode = flatGrid.find(node => node.mode === MODES.START_NODE_MODE);
-    const targetNode = flatGrid.find(node => node.mode === MODES.TARGET_NODE_MODE);
-
-    if (flatGrid.length > 1) {
-      if (!startNode) {
-        const startNodePos = {
-          x: Math.floor(Math.random() * grid.length),
-          y: Math.floor(Math.random() * grid[0].length),
-        };
-
-        handleNodeSelect(
-          grid,
-          setGrid,
-          {
-            ...startNodePos,
-            index: parseInt(`${startNodePos.x}${startNodePos.y}`),
-            mode: MODES.DEFAULT_NODE_MODE,
-          },
-          MODES.START_NODE_MODE,
-        );
-      }
-
-      if (!targetNode) {
-        const targetNodePos = {
-          x: Math.floor(Math.random() * grid.length),
-          y: Math.floor(Math.random() * grid[0].length),
-        };
-
-        while (startNode && startNode.x === targetNodePos.x && startNode.y === targetNodePos.y) {
-          targetNodePos.x = Math.floor(Math.random() * grid.length);
-          targetNodePos.y = Math.floor(Math.random() * grid[0].length);
-        }
-
-        handleNodeSelect(
-          grid,
-          setGrid,
-          {
-            ...targetNodePos,
-            index: parseInt(`${targetNodePos.x}${targetNodePos.y}`),
-            mode: MODES.DEFAULT_NODE_MODE,
-          },
-          MODES.TARGET_NODE_MODE,
-        );
-      }
-    }
-
+    const { startNode, targetNode } = initBoard(grid, setGrid);
     if (startNode && targetNode) {
       dijkstra({ startNode, endNode: targetNode, grid });
     }
