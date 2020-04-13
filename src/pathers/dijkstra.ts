@@ -22,6 +22,10 @@ const dijkstra = ({ startNode, endNode, grid }: Props): Path => {
     const shortestStep = queue.dequeue()!;
     const currentNode = shortestStep[0];
 
+    if (currentNode.index === endNode.index) {
+      break;
+    }
+
     getNeighbors(currentNode, grid).forEach(neighbor => {
       const time = times[currentNode.index] + 0;
 
