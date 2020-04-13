@@ -18,7 +18,6 @@ const initBoard = (grid: Node[][], setGrid: React.Dispatch<React.SetStateAction<
         setGrid,
         {
           ...startNodePos,
-          index: parseInt(`${startNodePos.x}${startNodePos.y}`),
           mode: MODES.DEFAULT_NODE_MODE,
         },
         MODES.START_NODE_MODE,
@@ -41,7 +40,6 @@ const initBoard = (grid: Node[][], setGrid: React.Dispatch<React.SetStateAction<
         setGrid,
         {
           ...targetNodePos,
-          index: parseInt(`${targetNodePos.x}${targetNodePos.y}`),
           mode: MODES.DEFAULT_NODE_MODE,
         },
         MODES.TARGET_NODE_MODE,
