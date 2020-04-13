@@ -16,8 +16,6 @@ const dijkstra = ({ startNode, endNode, grid }: Props): Path => {
   let trace: any = {};
   const queue = new PriorityQueue();
 
-  times[startNode.index] = 0;
-
   queue.enqueue([startNode, 0]);
 
   while (!queue.isEmpty()) {
