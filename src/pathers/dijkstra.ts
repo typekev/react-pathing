@@ -22,7 +22,7 @@ const dijkstra = ({ startNode, endNode, grid }: Props): Path => {
     const shortestStep = queue.dequeue()!;
     const currentNode = shortestStep[0];
 
-    if (currentNode.index === endNode.index) {
+    if (trace.has(endNode)) {
       break;
     }
 
