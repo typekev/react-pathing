@@ -12,11 +12,11 @@ type Path = Node[];
 
 const dijkstra = ({ startNode, endNode, grid }: Props): Path => {
   const flatGrid = grid.flat();
+  const unVisited: Set<Node> = new Set(flatGrid);
   const tentativeDistances: number[] = flatGrid.map(({ index }) =>
     index === startNode.index ? 0 : Infinity,
   );
   const trace: Map<Node, Node> = new Map();
-  const unVisited: Set<Node> = new Set(flatGrid);
   const queue = new PriorityQueue();
 
   queue.enqueue([startNode, 0]);
@@ -30,7 +30,7 @@ const dijkstra = ({ startNode, endNode, grid }: Props): Path => {
     }
 
     getNeighbors(currentNode, grid, unVisited).forEach(neighbor => {
-      const newTentativeDistance = tentativeDistances[currentNode.index] + 1;
+      const newTentativeDistance = tentativeDistances[currentNode.index] + 1; // hard coded weight
 
       if (newTentativeDistance < tentativeDistances[neighbor.index]) {
         tentativeDistances[neighbor.index] = newTentativeDistance;
