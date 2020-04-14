@@ -45,7 +45,10 @@ const dijkstra = ({ startNode, endNode, grid }: Props): Path => {
   let lastStep = endNode;
 
   while (lastStep.index !== startNode.index) {
-    const lastStepTrace = trace.get(lastStep)!;
+    const lastStepTrace = trace.get(lastStep);
+    if (!lastStepTrace) {
+      break;
+    }
     path.unshift(lastStepTrace);
     lastStep = lastStepTrace;
   }
