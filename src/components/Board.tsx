@@ -24,7 +24,31 @@ const clearPaths = async (
 
       return nextGrid;
     })
-    .then(nextGrid => setGrid(nextGrid));
+    .then(nextGrid => {
+      setGrid(nextGrid);
+      return nextGrid;
+    });
+
+const runDijkstra = (
+  grid: Node[][],
+  setGrid: React.Dispatch<React.SetStateAction<Node[][]>>,
+  startNode?: Node,
+  targetNode?: Node,
+) => () =>
+  startNode &&
+  targetNode &&
+  clearPaths(grid, setGrid).then(grid => {
+    const path = dijkstra({ startNode, endNode: targetNode, grid });
+    const nextGrid = [...grid];
+
+    path.shift();
+    path.pop();
+    path.filter(Boolean).forEach(({ x, y, index }) => {
+      nextGrid[x][y] = { x, y, index, mode: MODES.PATH_NODE_MODE };
+    });
+
+    setGrid(nextGrid);
+  });
 
 interface Props {
   grid: Node[][];
@@ -57,22 +81,6 @@ const Board = ({ grid, setGrid, mainElement }: Props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [grid, setGrid]);
 
-  const runDijkstra = () =>
-    startNode &&
-    targetNode &&
-    clearPaths(grid, setGrid).then(() => {
-      const path = dijkstra({ startNode, endNode: targetNode, grid });
-      const nextGrid = [...grid];
-
-      path.shift();
-      path.pop();
-      path.filter(Boolean).forEach(({ x, y, index }) => {
-        nextGrid[x][y] = { x, y, index, mode: MODES.PATH_NODE_MODE };
-      });
-
-      setGrid(nextGrid);
-    });
-
   return (
     <BoardSection>
       {grid &&
@@ -100,7 +108,11 @@ const Board = ({ grid, setGrid, mainElement }: Props) => {
             ))}
           </BoardRow>
         ))}
-      <SpeedDial mode={mode} setMode={setMode} runDijkstra={runDijkstra} />
+      <SpeedDial
+        mode={mode}
+        setMode={setMode}
+        runDijkstra={runDijkstra(grid, setGrid, startNode, targetNode)}
+      />
     </BoardSection>
   );
 };
