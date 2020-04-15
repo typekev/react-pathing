@@ -8,29 +8,7 @@ import { MODE_TOGGLE_MAP, ENTERABLE_MODES } from '../constants';
 import SpeedDial from './SpeedDial';
 import handleNodeSelect from './Board/handleNodeSelect';
 import initBoard from './Board/initBoard';
-import dijkstra from '../pathers/dijkstra';
-import clearPaths from '../utils/clearPaths';
-
-const runDijkstra = (
-  grid: Node[][],
-  setGrid: React.Dispatch<React.SetStateAction<Node[][]>>,
-  startNode?: Node,
-  targetNode?: Node,
-) => () =>
-  startNode &&
-  targetNode &&
-  clearPaths(grid, setGrid).then(grid => {
-    const path = dijkstra({ startNode, endNode: targetNode, grid });
-    const nextGrid = [...grid];
-
-    path.shift();
-    path.pop();
-    path.filter(Boolean).forEach(({ x, y, index }) => {
-      nextGrid[x][y] = { x, y, index, mode: MODES.PATH_NODE_MODE };
-    });
-
-    setGrid(nextGrid);
-  });
+import runDijkstra from '../utils/runDijkstra';
 
 interface Props {
   grid: Node[][];
