@@ -48,7 +48,7 @@ const Board = ({ grid, setGrid, mainElement }: Props) => {
           <BoardRow key={rowIndex}>
             {row.map(node => (
               <Cell
-                key={`${node.x}${node.y}`}
+                key={node.index}
                 mode={node.mode}
                 onMouseDown={() =>
                   setMode(
