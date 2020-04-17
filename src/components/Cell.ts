@@ -1,10 +1,8 @@
 import styled, { css } from 'styled-components';
 import { NODE_WIDTH } from '../constants';
-import { MODES } from '../types';
+import { MODES, Node } from '../types';
 
-interface Props {
-  mode: MODES;
-}
+interface Props extends Node {}
 
 const Cell = styled.div`
   display: inline-block;
