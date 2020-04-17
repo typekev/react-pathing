@@ -5,12 +5,13 @@ export enum MODES {
   TARGET_NODE_MODE,
   PATH_NODE_MODE,
 
-  DEFAULT_NODE_MODE
+  DEFAULT_NODE_MODE,
 }
 
 export interface Node {
-  x: number
-  y: number,
-  index: number,
-  mode: MODES,
+  x: number;
+  y: number;
+  index: number;
+  pathIndex?: number;
+  mode: MODES;
 }
