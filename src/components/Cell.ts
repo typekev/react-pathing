@@ -8,10 +8,15 @@ const Cell = styled.div`
   display: inline-block;
   width: calc(${NODE_WIDTH}em - 0.0625rem);
   height: calc(${NODE_WIDTH}em - 0.0625rem);
+  background-color: white;
   border: 0.0625rem solid;
   border-color: grey;
   margin-bottom: -0.0625rem;
   margin-right: -0.0625rem;
+  transition-property: background-color border-color;
+  transition-duration: 100ms;
+  transition-timing-function: cubic-bezier(0.4, 0.0, 0.2, 1);
+
 
   ${({ mode }: Props) =>
     mode === MODES.FILL_MODE &&
@@ -34,11 +39,12 @@ const Cell = styled.div`
       border-color: red;
     `}
 
-  ${({ mode }: Props) =>
+  ${({ mode, pathIndex }: Props) =>
     mode === MODES.PATH_NODE_MODE &&
     css`
+      transition-delay: ${(pathIndex || 0) * 60}ms;
       background-color: yellowgreen;
-      border-color: yellowgreen;
+      border-color: darkgreen;
     `}
 `;
 
