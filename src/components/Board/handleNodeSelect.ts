@@ -1,3 +1,4 @@
+import cloneDeep from 'lodash.clonedeep';
 import { MODES, Node } from '../../types';
 import { MODE_TOGGLE_MAP } from '../../constants';
 
@@ -11,7 +12,7 @@ const handleNodeSelect = (
   { x, y, index, mode: currentMode }: PartialNode,
   modeOverride?: MODES | false,
 ) => {
-  const nextGrid = [...grid];
+  const nextGrid = cloneDeep(grid);
   const nextMode = modeOverride || MODE_TOGGLE_MAP[currentMode];
   nextGrid[x][y] = {
     x,

@@ -1,3 +1,4 @@
+import cloneDeep from 'lodash.clonedeep';
 import { MODES, Node } from '../types';
 import dijkstra from '../pathers/dijkstra';
 import clearPaths from './clearPaths';
@@ -11,8 +12,8 @@ const runDijkstra = (
   startNode &&
   targetNode &&
   clearPaths(grid, setGrid).then(clearedGrid => {
-    const path = dijkstra({ startNode, endNode: targetNode, grid: clearedGrid });
-    const nextGrid = [...clearedGrid];
+    const path = dijkstra({ startNode, endNode: targetNode, grid });
+    const nextGrid = cloneDeep(clearedGrid);
 
     path.shift();
     path.pop();

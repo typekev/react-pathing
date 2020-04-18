@@ -1,27 +1,25 @@
+import cloneDeep from 'lodash.clonedeep';
 import { MODES, Node } from '../../types';
-import handleNodeSelect from './handleNodeSelect';
 
 const initBoard = (grid: Node[][], setGrid: React.Dispatch<React.SetStateAction<Node[][]>>) => {
   const flatGrid = grid.flat();
-  const startNode = flatGrid.find(node => node.mode === MODES.START_NODE_MODE);
-  const targetNode = flatGrid.find(node => node.mode === MODES.TARGET_NODE_MODE);
+  let startNode;
+  let targetNode;
 
   if (flatGrid.length > 1) {
+    startNode = flatGrid.find(node => node.mode === MODES.START_NODE_MODE);
+    targetNode = flatGrid.find(node => node.mode === MODES.TARGET_NODE_MODE);
+
     if (!startNode) {
       const startNodePos = {
         x: Math.floor(Math.random() * grid.length),
         y: Math.floor(Math.random() * grid[0].length),
       };
-
-      handleNodeSelect(
-        grid,
-        setGrid,
-        {
-          ...startNodePos,
-          mode: MODES.DEFAULT_NODE_MODE,
-        },
-        MODES.START_NODE_MODE,
-      );
+      startNode = {
+        ...grid[startNodePos.x][startNodePos.y],
+        ...startNodePos,
+        mode: MODES.START_NODE_MODE,
+      };
     }
 
     if (!targetNode) {
@@ -34,17 +32,17 @@ const initBoard = (grid: Node[][], setGrid: React.Dispatch<React.SetStateAction<
         targetNodePos.x = Math.floor(Math.random() * grid.length);
         targetNodePos.y = Math.floor(Math.random() * grid[0].length);
       }
-
-      handleNodeSelect(
-        grid,
-        setGrid,
-        {
-          ...targetNodePos,
-          mode: MODES.DEFAULT_NODE_MODE,
-        },
-        MODES.TARGET_NODE_MODE,
-      );
+      targetNode = {
+        ...grid[targetNodePos.x][targetNodePos.y],
+        ...targetNodePos,
+        mode: MODES.TARGET_NODE_MODE,
+      };
     }
+    const nextGrid = cloneDeep(grid);
+    nextGrid[startNode.x][startNode.y] = startNode;
+    nextGrid[targetNode.x][targetNode.y] = targetNode;
+
+    setGrid(nextGrid);
   }
   return { startNode, targetNode };
 };
