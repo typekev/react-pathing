@@ -10,9 +10,9 @@ const runDijkstra = (
 ) => () =>
   startNode &&
   targetNode &&
-  clearPaths(grid, setGrid).then(grid => {
-    const path = dijkstra({ startNode, endNode: targetNode, grid });
-    const nextGrid = [...grid];
+  clearPaths(grid, setGrid).then(clearedGrid => {
+    const path = dijkstra({ startNode, endNode: targetNode, grid: clearedGrid });
+    const nextGrid = [...clearedGrid];
 
     path.shift();
     path.pop();
