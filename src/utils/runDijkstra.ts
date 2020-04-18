@@ -17,7 +17,13 @@ const runDijkstra = (
     path.shift();
     path.pop();
     path.filter(Boolean).forEach(({ x, y, index }, pathIndex) => {
-      nextGrid[x][y] = { x, y, index, pathIndex, mode: MODES.PATH_NODE_MODE };
+      nextGrid[x][y] = {
+        x,
+        y,
+        index,
+        pathIndex: grid[x][y].mode === MODES.PATH_NODE_MODE ? 0 : pathIndex,
+        mode: MODES.PATH_NODE_MODE,
+      };
     });
 
     setGrid(nextGrid);
