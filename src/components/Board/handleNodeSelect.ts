@@ -7,20 +7,21 @@ interface PartialNode extends Omit<Node, 'index'> {
 }
 
 const handleNodeSelect = (
-  grid: Node[][],
   setGrid: React.Dispatch<React.SetStateAction<Node[][]>>,
   { x, y, index, mode: currentMode }: PartialNode,
   modeOverride?: MODES | false,
 ) => {
-  const nextGrid = cloneDeep(grid);
   const nextMode = modeOverride || MODE_TOGGLE_MAP[currentMode];
-  nextGrid[x][y] = {
-    x,
-    y,
-    index: index === undefined ? nextGrid[x][y].index : index,
-    mode: nextMode,
-  };
-  setGrid(nextGrid);
+  setGrid(grid => {
+    const nextGrid = cloneDeep(grid);
+    nextGrid[x][y] = {
+      x,
+      y,
+      index: index === undefined ? nextGrid[x][y].index : index,
+      mode: nextMode,
+    };
+    return nextGrid;
+  });
   return nextMode;
 };
 

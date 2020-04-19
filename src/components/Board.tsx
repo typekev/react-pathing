@@ -4,7 +4,7 @@ import { addEventListeners } from '../utils';
 import BoardSection from './BoardSection';
 import BoardRow from './BoardRow';
 import { MODES, Node } from '../types';
-import { MODE_TOGGLE_MAP, ENTERABLE_MODES } from '../constants';
+import { MODE_TOGGLE_MAP, ENTERABLE_MODES, DRAGGABLE_MODES } from '../constants';
 import SpeedDial from './SpeedDial';
 import handleNodeSelect from './Board/handleNodeSelect';
 import initBoard from './Board/initBoard';
@@ -53,16 +53,20 @@ const Board = ({ grid, setGrid, mainElement }: Props) => {
                 onMouseDown={() =>
                   setMode(
                     handleNodeSelect(
-                      grid,
                       setGrid,
                       node,
                       mode === MODES.DEFAULT_NODE_MODE ? MODE_TOGGLE_MAP[node.mode] : mode,
                     ),
                   )
                 }
-                onMouseEnter={() =>
+                onMouseEnter={async () =>
                   mouseDown &&
-                  handleNodeSelect(grid, setGrid, node, ENTERABLE_MODES.includes(mode) && mode)
+                  handleNodeSelect(setGrid, node, ENTERABLE_MODES.includes(mode) && mode)
+                }
+                onMouseLeave={async () =>
+                  mouseDown &&
+                  DRAGGABLE_MODES.includes(mode) &&
+                  handleNodeSelect(setGrid, node, MODES.CLEAR_MODE)
                 }
               />
             ))}
