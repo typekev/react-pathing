@@ -7,7 +7,7 @@ import AddRoundedIcon from '@material-ui/icons/AddRounded';
 import CloseRoundedIcon from '@material-ui/icons/CloseRounded';
 import TrackChangesRoundedIcon from '@material-ui/icons/TrackChangesRounded';
 import PlayArrowRoundedIcon from '@material-ui/icons/PlayArrowRounded';
-import { MODES } from '../types';
+import { MODES, Pathers } from '../types';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -22,10 +22,10 @@ const useStyles = makeStyles((theme: Theme) =>
 interface Props {
   mode: MODES;
   setMode: React.Dispatch<React.SetStateAction<MODES>>;
-  runDijkstra: any;
+  runPather: (pather: Pathers) => void;
 }
 
-const SpeedDial = ({ mode, setMode, runDijkstra }: Props) => {
+const SpeedDial = ({ mode, setMode, runPather }: Props) => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
 
@@ -37,8 +37,8 @@ const SpeedDial = ({ mode, setMode, runDijkstra }: Props) => {
     },
     {
       icon: <PlayArrowRoundedIcon />,
-      name: 'run dijkstra',
-      onClick: runDijkstra,
+      name: 'Run dijkstra',
+      onClick: () => runPather('dijkstra'),
     },
   ];
 

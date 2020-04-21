@@ -3,12 +3,12 @@ import Cell from './Cell';
 import { addEventListeners } from '../utils';
 import BoardSection from './BoardSection';
 import BoardRow from './BoardRow';
-import { MODES, Node } from '../types';
+import { MODES, Node, Pathers } from '../types';
 import { MODE_TOGGLE_MAP, ENTERABLE_MODES, DRAGGABLE_MODES } from '../constants';
 import SpeedDial from './SpeedDial';
 import handleNodeSelect from './Board/handleNodeSelect';
 import initBoard from './Board/initBoard';
-import runDijkstra from '../utils/runDijkstra';
+import runPather from '../utils/runPather';
 
 interface Props {
   grid: Node[][];
@@ -33,6 +33,7 @@ const Board = ({ grid, setGrid, mainElement }: Props) => {
   const flatGrid = grid.flat();
   const startNode = flatGrid.find(node => node.mode === MODES.START_NODE_MODE);
   const targetNode = flatGrid.find(node => node.mode === MODES.TARGET_NODE_MODE);
+  // const pathNode = flatGrid.find(node => node.mode === MODES.PATH_NODE_MODE);
 
   useEffect(() => {
     if (!startNode && !targetNode) {
@@ -75,7 +76,9 @@ const Board = ({ grid, setGrid, mainElement }: Props) => {
       <SpeedDial
         mode={mode}
         setMode={setMode}
-        runDijkstra={runDijkstra(grid, setGrid, startNode, targetNode)}
+        runPather={(pather: Pathers) => {
+          runPather(pather, setGrid, startNode, targetNode);
+        }}
       />
     </BoardSection>
   );

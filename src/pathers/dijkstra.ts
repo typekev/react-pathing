@@ -1,16 +1,10 @@
-import { Node } from '../types';
+import { Node, PatherProps } from '../types';
 import PriorityQueue from '../utils/PriorityQueue';
 import getNeighbors from '../utils/getNeighbors';
 
-interface Props {
-  startNode: Node;
-  endNode: Node;
-  grid: Node[][];
-}
+interface Props extends PatherProps {}
 
-type Path = Node[];
-
-const dijkstra = ({ startNode, endNode, grid }: Props): Path => {
+const dijkstra = ({ startNode, endNode, grid }: Props): Node[] => {
   const flatGrid = grid.flat();
   const unVisited: Set<Node> = new Set(flatGrid);
   const tentativeDistances: number[] = flatGrid.map(({ index }) =>
@@ -18,7 +12,7 @@ const dijkstra = ({ startNode, endNode, grid }: Props): Path => {
   );
   const trace: Map<Node, Node> = new Map();
   const queue = new PriorityQueue();
-  
+
   queue.enqueue([startNode, 0]);
 
   while (!queue.isEmpty()) {

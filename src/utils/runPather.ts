@@ -1,19 +1,27 @@
 import cloneDeep from 'lodash.clonedeep';
-import { MODES, Node } from '../types';
+import { MODES, Node, PatherProps, Pathers } from '../types';
+import getClearPaths from './getClearPaths';
 import dijkstra from '../pathers/dijkstra';
-import clearPaths from './clearPaths';
 
-const runDijkstra = (
-  grid: Node[][],
+export type PatherMap = {
+  [key in Pathers]: ({ startNode, endNode, grid }: PatherProps) => Node[];
+};
+
+export const PATHER_MAP: PatherMap = {
+  dijkstra,
+};
+
+const runPather = (
+  pather: Pathers,
   setGrid: React.Dispatch<React.SetStateAction<Node[][]>>,
   startNode?: Node,
   targetNode?: Node,
-) => () =>
+) =>
   startNode &&
   targetNode &&
-  clearPaths(grid, setGrid).then(clearedGrid => {
-    const path = dijkstra({ startNode, endNode: targetNode, grid });
-    const nextGrid = cloneDeep(clearedGrid);
+  setGrid(grid => {
+    const path = PATHER_MAP[pather]({ startNode, endNode: targetNode, grid });
+    const nextGrid = cloneDeep(getClearPaths(grid));
     let i = 0;
 
     path.shift();
@@ -28,7 +36,7 @@ const runDijkstra = (
       };
     });
 
-    setGrid(nextGrid);
+    return nextGrid;
   });
 
-export default runDijkstra;
+export default runPather;

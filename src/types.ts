@@ -15,3 +15,11 @@ export interface Node {
   pathIndex?: number;
   mode: MODES;
 }
+
+export interface PatherProps {
+  startNode: Node;
+  endNode: Node;
+  grid: Node[][];
+}
+
+export type Pathers = 'dijkstra';
