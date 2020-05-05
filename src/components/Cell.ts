@@ -8,7 +8,7 @@ const Cell = styled.div`
   display: inline-block;
   width: calc(${NODE_WIDTH}em - 0.0625rem);
   height: calc(${NODE_WIDTH}em - 0.0625rem);
-  background-color: white;
+  background-color: transparent;
   border: 0.0625rem solid;
   border-color: grey;
   margin-bottom: -0.0625rem;
