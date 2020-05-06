@@ -7,8 +7,8 @@ const getGrid = async (mainElement: HTMLElement | null): Promise<Node[][]> => {
   const boardDimensions = await getBoardDimensions(mainElement);
   const fontSize = getFontSize(mainElement);
   const nodeSize = NODE_WIDTH * fontSize;
-  const numRows = Math.floor(boardDimensions[1] / nodeSize);
-  const numCellsPerRow = Math.floor(boardDimensions[0] / nodeSize);
+  const numRows = Math.ceil(boardDimensions[1] / nodeSize);
+  const numCellsPerRow = Math.ceil(boardDimensions[0] / nodeSize);
 
   return range(numRows).map(rowIndex =>
     range(numCellsPerRow).map(index => ({
