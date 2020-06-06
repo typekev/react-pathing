@@ -4,7 +4,7 @@
   "private": true,
   "homepage": "https://typekev.github.io/react-pathing/",
   "dependencies": {
-    "@material-ui/core": "^4.9.9",
+    "@material-ui/core": "^4.10.1",
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.48",
     "@testing-library/jest-dom": "^4.2.4",
