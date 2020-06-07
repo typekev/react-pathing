@@ -23,3 +23,7 @@ export interface PatherProps {
 }
 
 export type Pathers = 'dijkstra';
+
+export interface Options {
+  pather: Pathers
+}
