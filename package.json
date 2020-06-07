@@ -19,6 +19,7 @@
     "typescript": "^3.9.5"
   },
   "devDependencies": {
+    "@types/autosuggest-highlight": "^3.1.0",
     "@types/jest": "^25.2.3",
     "@types/lodash.clonedeep": "^4.5.6",
     "@types/node": "^14.0.11",
