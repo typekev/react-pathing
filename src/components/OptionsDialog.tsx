@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -10,10 +10,12 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
+import Box from '@material-ui/core/Box';
 import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
 import { TransitionProps } from '@material-ui/core/transitions';
 import { Options } from '../types';
+import PatherOptions from './OptionsDialog/PatherOptions';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -34,6 +36,10 @@ const Transition = React.forwardRef(function Transition(
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
+enum Menus {
+  pather,
+}
+
 interface Props {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -43,9 +49,18 @@ interface Props {
 
 const OptionsDialog = ({ open, setOpen, options, setOptions }: Props) => {
   const classes = useStyles();
+  const [speculativeOptions, setSpeculativeOptions] = useState<Options>(options);
+  const [currentMenu, setCurrentMenu] = useState<Menus>();
 
   const handleClose = () => {
+    setCurrentMenu(undefined);
+    setSpeculativeOptions(options);
     setOpen(false);
+  };
+
+  const handleSave = () => {
+    setOptions(speculativeOptions);
+    handleClose();
   };
 
   return (
@@ -56,19 +71,30 @@ const OptionsDialog = ({ open, setOpen, options, setOptions }: Props) => {
             <CloseIcon />
           </IconButton>
           <Typography variant="h6" className={classes.title}>
-            React Pathing Options
+            Options
           </Typography>
-          <Button autoFocus color="inherit" onClick={handleClose}>
+          <Button autoFocus color="inherit" onClick={handleSave}>
             save
           </Button>
         </Toolbar>
       </AppBar>
-      <List>
-        <ListItem button>
-          <ListItemText primary="Pather" secondary={options.pather} />
-        </ListItem>
-        <Divider />
-      </List>
+      {currentMenu === undefined && (
+        <List>
+          <ListItem button>
+            <ListItemText
+              primary="Pather"
+              secondary={speculativeOptions.pather}
+              onClick={() => setCurrentMenu(Menus.pather)}
+            />
+          </ListItem>
+          <Divider />
+        </List>
+      )}
+      <Box py={2} px={3}>
+        {currentMenu === Menus.pather && (
+          <PatherOptions options={speculativeOptions} setOptions={setSpeculativeOptions} />
+        )}
+      </Box>
     </Dialog>
   );
 };
