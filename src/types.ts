@@ -22,7 +22,7 @@ export interface PatherProps {
   grid: Node[][];
 }
 
-export type Pathers = 'Dijkstra';
+export enum Pathers { Dijkstra = 'Dijkstra' };
 
 export interface Options {
   pather: Pathers

@@ -12,7 +12,7 @@ import { MODES, Pathers, Options } from '../types';
 import OptionsDialog from './OptionsDialog';
 
 const initialOptions: Options = {
-  pather: 'Dijkstra',
+  pather: Pathers.Dijkstra,
 };
 
 const useStyles = makeStyles((theme: Theme) =>
