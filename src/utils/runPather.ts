@@ -8,7 +8,7 @@ export type PatherMap = {
 };
 
 export const PATHER_MAP: PatherMap = {
-  dijkstra,
+  Dijkstra: dijkstra,
 };
 
 const runPather = (
