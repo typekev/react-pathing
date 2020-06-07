@@ -5,9 +5,14 @@ import SpeedDialIcon from '@material-ui/lab/SpeedDialIcon';
 import SpeedDialAction from '@material-ui/lab/SpeedDialAction';
 import AddRoundedIcon from '@material-ui/icons/AddRounded';
 import CloseRoundedIcon from '@material-ui/icons/CloseRounded';
-import TrackChangesRoundedIcon from '@material-ui/icons/TrackChangesRounded';
 import PlayArrowRoundedIcon from '@material-ui/icons/PlayArrowRounded';
+import TrackChangesRoundedIcon from '@material-ui/icons/TrackChangesRounded';
+import SettingsRoundedIcon from '@material-ui/icons/SettingsRounded';
 import { MODES, Pathers } from '../types';
+
+const initialOptions = {
+  pather: 'dijkstra',
+};
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -27,50 +32,59 @@ interface Props {
 
 const SpeedDial = ({ mode, setMode, runPather }: Props) => {
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
+  const [speedDialOpen, setSpeedDialOpen] = React.useState(false);
+  const [optionsOpen, setOptionsOpen] = React.useState(false);
+  const [options, setOptions] = React.useState(initialOptions);
 
   const actions = [
+    {
+      icon: <PlayArrowRoundedIcon />,
+      name: 'Run dijkstra',
+      onClick: () => runPather('dijkstra'),
+    },
     {
       icon: <TrackChangesRoundedIcon />,
       name: 'Place target node',
       onClick: () => setMode(MODES.TARGET_NODE_MODE),
     },
     {
-      icon: <PlayArrowRoundedIcon />,
-      name: 'Run dijkstra',
-      onClick: () => runPather('dijkstra'),
+      icon: <SettingsRoundedIcon />,
+      name: 'Options',
+      onClick: () => setOptionsOpen(true),
     },
   ];
 
   const handleOpen = () => {
-    setOpen(true);
+    setSpeedDialOpen(true);
   };
 
   const handleClose = () => {
-    setOpen(false);
+    setSpeedDialOpen(false);
   };
 
   return (
-    <MuiSpeedDial
-      ariaLabel="SpeedDial openIcon example"
-      className={classes.speedDial}
-      icon={<SpeedDialIcon icon={<AddRoundedIcon />} openIcon={<CloseRoundedIcon />} />}
-      onClose={handleClose}
-      onOpen={handleOpen}
-      open={open}
-    >
-      {actions.map(action => (
-        <SpeedDialAction
-          key={action.name}
-          icon={action.icon}
-          tooltipTitle={action.name}
-          onClick={() => {
-            handleClose();
-            action.onClick();
-          }}
-        />
-      ))}
-    </MuiSpeedDial>
+    <>
+      <MuiSpeedDial
+        ariaLabel="SpeedDial openIcon example"
+        className={classes.speedDial}
+        icon={<SpeedDialIcon icon={<AddRoundedIcon />} openIcon={<CloseRoundedIcon />} />}
+        onClose={handleClose}
+        onOpen={handleOpen}
+        open={speedDialOpen}
+      >
+        {actions.map(action => (
+          <SpeedDialAction
+            key={action.name}
+            icon={action.icon}
+            tooltipTitle={action.name}
+            onClick={() => {
+              handleClose();
+              action.onClick();
+            }}
+          />
+        ))}
+      </MuiSpeedDial>
+    </>
   );
 };
 
