@@ -10,7 +10,9 @@ import TrackChangesRoundedIcon from '@material-ui/icons/TrackChangesRounded';
 import SettingsRoundedIcon from '@material-ui/icons/SettingsRounded';
 import { MODES, Pathers } from '../types';
 
-const initialOptions = {
+const initialOptions: {
+  pather: Pathers
+} = {
   pather: 'dijkstra',
 };
 
@@ -39,8 +41,8 @@ const SpeedDial = ({ mode, setMode, runPather }: Props) => {
   const actions = [
     {
       icon: <PlayArrowRoundedIcon />,
-      name: 'Run dijkstra',
-      onClick: () => runPather('dijkstra'),
+      name: `Run ${options.pather}`,
+      onClick: () => runPather(options.pather),
     },
     {
       icon: <TrackChangesRoundedIcon />,
