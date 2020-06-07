@@ -8,11 +8,10 @@ import CloseRoundedIcon from '@material-ui/icons/CloseRounded';
 import PlayArrowRoundedIcon from '@material-ui/icons/PlayArrowRounded';
 import TrackChangesRoundedIcon from '@material-ui/icons/TrackChangesRounded';
 import SettingsRoundedIcon from '@material-ui/icons/SettingsRounded';
-import { MODES, Pathers } from '../types';
+import { MODES, Pathers, Options } from '../types';
+import OptionsDialog from './OptionsDialog';
 
-const initialOptions: {
-  pather: Pathers
-} = {
+const initialOptions: Options = {
   pather: 'dijkstra',
 };
 
@@ -66,6 +65,12 @@ const SpeedDial = ({ mode, setMode, runPather }: Props) => {
 
   return (
     <>
+      <OptionsDialog
+        open={optionsOpen}
+        setOpen={setOptionsOpen}
+        options={options}
+        setOptions={setOptions}
+      />
       <MuiSpeedDial
         ariaLabel="SpeedDial openIcon example"
         className={classes.speedDial}
