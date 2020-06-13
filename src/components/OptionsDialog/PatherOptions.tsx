@@ -7,7 +7,7 @@ interface Props {
   setOptions: React.Dispatch<React.SetStateAction<Options>>;
 }
 
-const selectFieldOptions = Object.entries(Pathers).map(([label, value]) => ({ label, value }));
+const selectFieldOptions = Object.entries(Pathers).map(([value, label]) => ({ label, value }));
 
 const PatherOptions = ({ options, setOptions }: Props) => (
   <SelectField

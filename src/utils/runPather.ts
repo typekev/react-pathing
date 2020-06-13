@@ -9,6 +9,7 @@ export type PatherMap = {
 
 export const PATHER_MAP: PatherMap = {
   [Pathers.Dijkstra]: dijkstra,
+  [Pathers.AStar]: dijkstra,
 };
 
 const runPather = (
