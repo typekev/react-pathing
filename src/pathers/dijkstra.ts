@@ -2,7 +2,7 @@ import { Node, PatherProps } from '../types';
 import PriorityQueue from '../utils/PriorityQueue';
 import getNeighbors from '../utils/getNeighbors';
 
-interface Props extends PatherProps {}
+interface Props extends PatherProps { }
 
 const dijkstra = ({ startNode, endNode, grid }: Props): Node[] => {
   const flatGrid = grid.flat();
@@ -17,14 +17,14 @@ const dijkstra = ({ startNode, endNode, grid }: Props): Node[] => {
 
   while (!queue.isEmpty()) {
     const shortestStep = queue.dequeue()!;
-    const currentNode = shortestStep[0];
+    const [currentNode, currentNodeDistance] = shortestStep;
 
     if (trace.has(endNode) || !unVisited.has(currentNode)) {
       break;
     }
 
     getNeighbors(currentNode, grid, unVisited).forEach(neighbor => {
-      const newTentativeDistance = tentativeDistances[currentNode.index] + 1; // hard coded weight
+      const newTentativeDistance = currentNodeDistance + 1; // hard coded weight
 
       if (newTentativeDistance < tentativeDistances[neighbor.index]) {
         tentativeDistances[neighbor.index] = newTentativeDistance;
