@@ -14,6 +14,7 @@ export interface Node {
   index: number;
   pathIndex?: number;
   mode: MODES;
+  weight?: number;
 }
 
 export interface PatherProps {
