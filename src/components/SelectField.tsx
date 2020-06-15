@@ -5,21 +5,21 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
 
-interface SelectOption {
+interface SelectOption<T> {
   label: string;
-  value: string | number;
+  value: T;
 }
 
-interface Props {
+interface Props<T> {
   label: string;
-  options: SelectOption[];
-  onChange: (option: SelectOption | null) => void;
-  value?: SelectOption | null;
+  options: SelectOption<T>[];
+  onChange: (option: SelectOption<T> | null) => void;
+  value?: SelectOption<T> | null;
 }
 
-export default function SelectField({ label, options, onChange, value }: Props) {
+export default function SelectField<T = string>({ label, options, onChange, value }: Props<T>) {
   return (
-    <Autocomplete<SelectOption>
+    <Autocomplete<SelectOption<T>>
       fullWidth
       options={options}
       getOptionLabel={option => option.label}
