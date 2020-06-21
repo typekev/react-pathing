@@ -12,6 +12,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import CloseIcon from '@material-ui/icons/Close';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import Slide from '@material-ui/core/Slide';
 import { TransitionProps } from '@material-ui/core/transitions';
 import { Options } from '../types';
@@ -70,9 +71,25 @@ const OptionsDialog = ({ open, setOpen, options, setOptions }: Props) => {
     <Dialog fullScreen open={open} onClose={() => handleClose()} TransitionComponent={Transition}>
       <AppBar className={classes.appBar}>
         <Toolbar>
-          <IconButton edge="start" color="inherit" onClick={() => handleClose()} aria-label="close">
-            <CloseIcon />
-          </IconButton>
+          {currentMenu === undefined ? (
+            <IconButton
+              edge="start"
+              color="inherit"
+              onClick={() => handleClose()}
+              aria-label="close"
+            >
+              <CloseIcon />
+            </IconButton>
+          ) : (
+            <IconButton
+              edge="start"
+              color="inherit"
+              onClick={() => setCurrentMenu(undefined)}
+              aria-label="back"
+            >
+              <ArrowBackIcon />
+            </IconButton>
+          )}
           <Typography variant="h6" className={classes.title}>
             Options
           </Typography>
