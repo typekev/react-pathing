@@ -1,8 +1,9 @@
 import styled, { css } from 'styled-components';
-import { NODE_WIDTH } from '../constants';
 import { MODES, Node } from '../types';
+import { NODE_WIDTH } from '../constants';
+import theme from '../theme';
 
-interface Props extends Node {}
+interface Props extends Node { }
 
 const Cell = styled.div`
   display: inline-block;
@@ -28,23 +29,23 @@ const Cell = styled.div`
   ${({ mode }: Props) =>
     mode === MODES.START_NODE_MODE &&
     css`
-      background-color: green;
-      border-color: green;
+      background-color: ${theme.palette.primary.dark};
+      border-color: ${theme.palette.primary.dark} ;
     `}
 
   ${({ mode }: Props) =>
     mode === MODES.TARGET_NODE_MODE &&
     css`
-      background-color: red;
-      border-color: red;
+      background-color: ${theme.palette.error.main} ;
+      border-color: ${theme.palette.error.main}} ;
     `}
 
   ${({ mode, pathIndex }: Props) =>
     mode === MODES.PATH_NODE_MODE &&
     css`
       transition-delay: ${(pathIndex || 0) * 60}ms;
-      background-color: yellowgreen;
-      border-color: darkgreen;
+      background-color: ${theme.palette.primary.main};
+      border-color: ${theme.palette.primary.dark} ;
     `}
 `;
 
