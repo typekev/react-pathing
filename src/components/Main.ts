@@ -6,7 +6,7 @@ const Main = styled.main`
   width: calc(100% - ${WINDOW_PADDING * 2}rem);
   height: calc(100% - ${WINDOW_PADDING * 2}rem);
   padding: ${WINDOW_PADDING}rem;
-  background-color: ${theme.palette.background.paper};
+  background-color: ${theme.palette.background.default};
 `;
 
 export default Main;
