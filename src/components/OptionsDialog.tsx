@@ -100,12 +100,8 @@ const OptionsDialog = ({ open, setOpen, options, setOptions }: Props) => {
       </AppBar>
       {currentMenu === undefined && (
         <List>
-          <ListItem button>
-            <ListItemText
-              primary="Pather"
-              secondary={speculativeOptions.pather}
-              onClick={() => setCurrentMenu(Menus.pather)}
-            />
+          <ListItem button onClick={() => setCurrentMenu(Menus.pather)}>
+            <ListItemText primary="Pather" secondary={speculativeOptions.pather} />
           </ListItem>
           <Divider />
         </List>
