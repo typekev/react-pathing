@@ -7,7 +7,10 @@ const BoardSection = styled.section`
   height: fit-content;
   white-space: pre;
   user-select: none;
-  box-shadow: 0 3px 4px 0 rgba(0,0,0,0.14), 0 3px 3px -2px rgba(0,0,0,0.12), 0 1px 8px 0 rgba(0,0,0,0.20);
+  
+  @media screen and (-webkit-min-device-pixel-ratio:0) {
+      box-shadow: 0 3px 4px 0 rgba(0,0,0,0.14), 0 3px 3px -2px rgba(0,0,0,0.12), 0 1px 8px 0 rgba(0,0,0,0.20);
+}
 `
 
 export default BoardSection
